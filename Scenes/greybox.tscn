@@ -1,3 +1,92 @@
 [gd_scene format=3 uid="uid://k007jxl54vma"]
 
+[ext_resource type="Script" uid="uid://dgq7a6rhigvjo" path="res://Scripts/player.gd" id="1_nvxtq"]
+[ext_resource type="Script" uid="uid://ct3orfpu1r4qf" path="res://Scripts/Components/input_component.gd" id="2_brl6h"]
+[ext_resource type="Script" uid="uid://5wcc5isfgmf2" path="res://Scripts/Components/movement_component.gd" id="3_pyy2d"]
+[ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="4_r0nhd"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="5_3sq0g"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="6_3sq0g"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0ii14"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_0v2il"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0ii14"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_0ii14"]
+
+[sub_resource type="Resource" id="Resource_x0m7r"]
+script = ExtResource("5_3sq0g")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_0v2il"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_0ii14"]
+
 [node name="Greybox" type="Node3D" unique_id=2035528003]
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=1525463096]
+transform = Transform3D(1000, 0, 0, 0, 1, 0, 0, 0, 1000, 0, -0.5, 0)
+
+[node name="Floor Shape" type="CollisionShape3D" parent="Floor" unique_id=1583329533]
+shape = SubResource("BoxShape3D_0ii14")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=1744653566]
+mesh = SubResource("PlaneMesh_0v2il")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=2071691588]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 0, 100, 0)
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=595160823]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_nvxtq")
+
+[node name="Player Collider" type="CollisionShape3D" parent="Player" unique_id=1759358994]
+shape = SubResource("CapsuleShape3D_0ii14")
+
+[node name="Player Mesh" type="MeshInstance3D" parent="Player" unique_id=432352804]
+mesh = SubResource("CapsuleMesh_0ii14")
+
+[node name="InputComponent" type="Node" parent="Player" unique_id=368821319]
+unique_name_in_owner = true
+script = ExtResource("2_brl6h")
+metadata/_custom_type_script = "uid://ct3orfpu1r4qf"
+
+[node name="MovementComponent" type="Node" parent="Player" unique_id=94748852 node_paths=PackedStringArray("body")]
+unique_name_in_owner = true
+script = ExtResource("3_pyy2d")
+body = NodePath("..")
+metadata/_custom_type_script = "uid://5wcc5isfgmf2"
+
+[node name="PhantomCamera3D" type="Node3D" parent="." unique_id=1964368266 node_paths=PackedStringArray("follow_target")]
+transform = Transform3D(1, 0, 0, 0, 0.94997203, 0.31233492, 0, -0.31233492, 0.94997203, 0, 2.297335, 1.584972)
+script = ExtResource("4_r0nhd")
+follow_mode = 6
+follow_target = NodePath("../Player")
+tween_resource = SubResource("Resource_x0m7r")
+follow_offset = Vector3(0, 0.985, 0.635)
+vertical_rotation_offset = 0.31764992386296775
+align_transform_with_view = Callable()
+align_position_with_view = Callable()
+align_rotation_with_view = Callable()
+metadata/_custom_type_script = "uid://csjccrhj5wnx7"
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1716405283]
+physics_interpolation_mode = 1
+transform = Transform3D(1, 0, 0, 0, 0.94997203, 0.31233492, 0, -0.31233492, 0.94997203, 0, 2.297335, 1.584972)
+top_level = true
+fov = 84.9
+
+[node name="PhantomCameraHost" type="Node" parent="Camera3D" unique_id=1799624758]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("6_3sq0g")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=230461696]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -9)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1646560413]
+shape = SubResource("SphereShape3D_0v2il")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D" unique_id=239153754]
+mesh = SubResource("SphereMesh_0ii14")
