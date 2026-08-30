@@ -1,8 +1,9 @@
 class_name InputComponent extends Node
 
 var input_dir : Vector2
-
+var shift
 
 
 func update() -> void:
 	input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	shift = Input.is_action_pressed("speed_up")

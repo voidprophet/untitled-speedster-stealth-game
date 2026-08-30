@@ -4,7 +4,9 @@
 [ext_resource type="Script" uid="uid://ct3orfpu1r4qf" path="res://Scripts/Components/input_component.gd" id="2_brl6h"]
 [ext_resource type="Script" uid="uid://5wcc5isfgmf2" path="res://Scripts/Components/movement_component.gd" id="3_pyy2d"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="4_r0nhd"]
+[ext_resource type="Script" uid="uid://c633fc6lehk0v" path="res://Scripts/Components/time_slow_component.gd" id="4_x0m7r"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="5_3sq0g"]
+[ext_resource type="Script" uid="uid://byct7hml7cwjg" path="res://Scripts/Components/camera_mouse_component.gd" id="5_b1yex"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="6_3sq0g"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0ii14"]
@@ -21,6 +23,13 @@ script = ExtResource("5_3sq0g")
 [sub_resource type="SphereShape3D" id="SphereShape3D_0v2il"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_0ii14"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_0ii14"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_0v2il"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n51ye"]
+albedo_color = Color(0.2784314, 1, 1, 1)
 
 [node name="Greybox" type="Node3D" unique_id=2035528003]
 
@@ -51,11 +60,21 @@ unique_name_in_owner = true
 script = ExtResource("2_brl6h")
 metadata/_custom_type_script = "uid://ct3orfpu1r4qf"
 
-[node name="MovementComponent" type="Node" parent="Player" unique_id=94748852 node_paths=PackedStringArray("body")]
+[node name="MovementComponent" type="Node" parent="Player" unique_id=94748852]
 unique_name_in_owner = true
 script = ExtResource("3_pyy2d")
-body = NodePath("..")
 metadata/_custom_type_script = "uid://5wcc5isfgmf2"
+
+[node name="TimeSlowComponent" type="Node" parent="Player" unique_id=636820605]
+unique_name_in_owner = true
+script = ExtResource("4_x0m7r")
+metadata/_custom_type_script = "uid://c633fc6lehk0v"
+
+[node name="CameraMouseComponent" type="Node" parent="Player" unique_id=89577339 node_paths=PackedStringArray("phantom_camera_3d")]
+unique_name_in_owner = true
+script = ExtResource("5_b1yex")
+phantom_camera_3d = NodePath("../../PhantomCamera3D")
+metadata/_custom_type_script = "uid://byct7hml7cwjg"
 
 [node name="PhantomCamera3D" type="Node3D" parent="." unique_id=1964368266 node_paths=PackedStringArray("follow_target")]
 transform = Transform3D(1, 0, 0, 0, 0.94997203, 0.31233492, 0, -0.31233492, 0.94997203, 0, 2.297335, 1.584972)
@@ -90,3 +109,13 @@ shape = SubResource("SphereShape3D_0v2il")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D" unique_id=239153754]
 mesh = SubResource("SphereMesh_0ii14")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=610258027]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 37.844448, -5.527788)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=2054190402]
+shape = SubResource("SphereShape3D_0ii14")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D" unique_id=1381433654]
+mesh = SubResource("SphereMesh_0v2il")
+surface_material_override/0 = SubResource("StandardMaterial3D_n51ye")
