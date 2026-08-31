@@ -1,12 +1,18 @@
 class_name CameraMouseComponent extends Node
 
-@export var phantom_camera_3d: PhantomCamera3D
 @onready var body: CharacterBody3D = get_parent() as CharacterBody3D
-var mouse_sensitivity: float = 0.1
-var min_pitch: float = -89.9
-var max_pitch: float = 50
-var min_yaw: float = 0
-var max_yaw: float = 360
+@export var sensitivity = 125.0
+@export var camera_pivot: Node3D
+@export var camera: Camera3D  # Assign your Camera3D node here in the editor
+
+# FOV Settings
+@export var base_fov: float = 75.0
+@export var max_fov: float = 150.0
+@export var max_speed_for_fov: float = 250 # The speed at which FOV hits maximum
+@export var fov_smoothing: float = 5     # Higher is snappier, lower is smoother
+
+var current_fov: float = 75.0
+
 
 func _ready():
 	# Ensure mouse is captured to hide cursor and get relative movement
@@ -23,17 +29,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	# Only process camera rotation when captured
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		# Get current rotation degrees from Phantom Camera
-		var pcam_rotation_degrees: Vector3 = phantom_camera_3d.get_third_person_rotation_degrees()
-		
-		# Adjust Pitch (X axis) based on vertical mouse movement
-		pcam_rotation_degrees.x -= event.relative.y * mouse_sensitivity
-		pcam_rotation_degrees.x = clampf(pcam_rotation_degrees.x, min_pitch, max_pitch)
-		
-		# Adjust Yaw (Y axis) based on horizontal mouse movement
-		pcam_rotation_degrees.y -= event.relative.x * mouse_sensitivity
-		pcam_rotation_degrees.y = wrapf(pcam_rotation_degrees.y, min_yaw, max_yaw)
-		
-		# Apply the new rotation to the Phantom Camera
-		phantom_camera_3d.set_third_person_rotation_degrees(pcam_rotation_degrees)
-		body.rotation.y = deg_to_rad(pcam_rotation_degrees.y)   
+		body.rotation.y -= event.relative.x / sensitivity
+		camera_pivot.rotation.x -= event.relative.y / sensitivity
+		camera_pivot.rotation.x = clamp(camera_pivot.rotation.x, deg_to_rad(-65), deg_to_rad(75))   

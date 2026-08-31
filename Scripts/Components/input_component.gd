@@ -1,7 +1,7 @@
 class_name InputComponent extends Node
 
 var input_dir : Vector2
-var shift
+var shift : bool = false
 
 
 func update() -> void:

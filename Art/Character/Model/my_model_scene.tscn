@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://sqn6dfeg7xak"]
+
+[ext_resource type="PackedScene" uid="uid://qfeqs6k7tx01" path="res://Art/Character/Model/HumanM_Model.fbx" id="1_hjciq"]
+
+[node name="HumanM_Model" unique_id=1399023063 instance=ExtResource("1_hjciq")]
